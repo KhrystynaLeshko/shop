@@ -33,6 +33,27 @@ const verifyTokenAndAuthorization = (req, res, next) => {
   });
 };
 
+// function verifyTokenAndAdmin(req, res, next) {
+//   const token = req.header('auth-token');
+//   if (!token) return res.status(401).send('Access Denied');
+
+//   try {
+//     const verified = jwt.verify(token, process.env.JWT_SEC);
+//     if (!verified) return res.status(401).send('Access Denied');
+
+//     // Check if the user object exists before accessing its properties
+//     if (!verified.user || !verified.user.isAdmin) {
+//       return res.status(403).send('Forbidden');
+//     }
+
+//     req.user = verified;
+//     next();
+//   } catch (err) {
+//     res.status(400).send('Invalid Token');
+//   }
+// }
+
+// OLD CODE:
 const verifyTokenAndAdmin = (req, res, next) => {
   verifyToken(req, res, () => {
     // Check if the user is an admin

@@ -27,16 +27,19 @@ export const categories = [
     id: 1,
     img: "/src/assets/yellow-bg.jpg",
     title: "ENDLESS SUMMER",
+    cat: "woman"
   },
   {
     id: 2,
     img: "/src/assets/flowers-dress.jpg",
     title: "DRESS SELECTION",
+    cat: "unisex"
   },
   {
     id: 3,
     img: "/src/assets/man-shirt.jpg",
     title: "ELEGANT UTILITY",
+    cat: "man"
   },
 ];
 
