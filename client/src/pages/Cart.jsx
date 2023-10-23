@@ -1,16 +1,17 @@
-import React from 'react'
-import Navbar from '../components/Navbar'
-import Announcement from '../components/Announcement'
-import Footer from '../components/Footer'
-import { styled } from 'styled-components'
+import React, { useEffect } from 'react';
+import Navbar from '../components/Navbar';
+import Announcement from '../components/Announcement';
+import Footer from '../components/Footer';
+import { styled } from 'styled-components';
 import { Add, FavoriteBorderOutlined, Remove, ShoppingCartOutlined } from '@material-ui/icons'
-import { mobile } from '../responsive'
-import { useSelector } from 'react-redux'
+import { mobile } from '../responsive';
+import { useSelector } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
+import { userRequest } from '../requestMethods';
+import { useNavigate } from 'react-router-dom';
+
 // import dotenv from 'dotenv';
-
 // dotenv.config();
-
 // const KEY = process.env.REACT_APP_STRIPE_KEY;
 
 const KEY = import.meta.env.VITE_REACT_APP_STRIPE_KEY;
@@ -179,11 +180,27 @@ const Button = styled.button`
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const [stripeToken, setStripeToken] = React.useState(null);
+  const navigate = useNavigate();
 
   const onToken = (token) => {
     setStripeToken(token);
   };
-  console.log(stripeToken);
+  // console.log(stripeToken);
+  useEffect(() => {
+    const makeRequest = async () => {
+      try {
+      const res = await userRequest.post("/checkout/payment", {
+        tokenId: stripeToken.id,
+        // amount: cart.total * 100,
+        amount: 500,
+      });
+      navigate("/success",{data: res.data});
+    } catch (error) {
+      console.log(error);
+      }
+    };
+    stripeToken && makeRequest();
+  }, [stripeToken, cart.total, navigate]);
 
   return (
     <Container>
@@ -245,8 +262,8 @@ const Cart = () => {
               <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout
-              name="SIMBA SHOP"
-              image="https://avatars.githubusercontent.com/u/43880563?v=4"
+              name="SIMBA."
+              image="https://imgur.com/wbDh9cw.png"
               billingAddress
               shippingAddress
               description={`Your total is $${cart.total}`}
