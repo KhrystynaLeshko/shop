@@ -5,6 +5,15 @@ import Footer from '../components/Footer'
 import { styled } from 'styled-components'
 import { Add, FavoriteBorderOutlined, Remove, ShoppingCartOutlined } from '@material-ui/icons'
 import { mobile } from '../responsive'
+import { useSelector } from 'react-redux'
+import StripeCheckout from 'react-stripe-checkout';
+// import dotenv from 'dotenv';
+
+// dotenv.config();
+
+// const KEY = process.env.REACT_APP_STRIPE_KEY;
+
+const KEY = import.meta.env.VITE_REACT_APP_STRIPE_KEY;
 
 const Container = styled.div`
 
@@ -168,6 +177,14 @@ const Button = styled.button`
 
 
 const Cart = () => {
+  const cart = useSelector((state) => state.cart);
+  const [stripeToken, setStripeToken] = React.useState(null);
+
+  const onToken = (token) => {
+    setStripeToken(token);
+  };
+  console.log(stripeToken);
+
   return (
     <Container>
       <Navbar/>
@@ -185,54 +202,35 @@ const Cart = () => {
 
         <Bottom>
           <Info>
+          {cart.products.map((product) => (
             <Product>
               <ProductDetail>
-                <Image src="https://images.pexels.com/photos/9594681/pexels-photo-9594681.jpeg"/>
+                <Image src={product.img}/>
                 <Details>
-                  <ProductName><b>Product:</b>OLIVE PARADISE SHIRT</ProductName>
-                  <ProductId><b>ID:</b>95749234</ProductId>
-                  <ProductColor color="#bdc3b5"/>
-                  <ProductSize><b>Size:</b>M</ProductSize>
+                  <ProductName><b>Product:</b>{product.title}</ProductName>
+                  <ProductId><b>ID:</b>{product._id}</ProductId>
+                  <ProductColor color={product.color}/>
+                  <ProductSize><b>Size:</b>{product.size}</ProductSize>
+                  {/* {product.size && <ProductSize><b>Size:</b>{product.size}</ProductSize>} */}
                 </Details>
               </ProductDetail>
-
               <PriceDetail>
                 <ProductAmountContainer>
                   <Add />
-                  <ProductAmount>2</ProductAmount>
+                  <ProductAmount>{product.quantity}</ProductAmount>
                   <Remove />
                 </ProductAmountContainer>
-                <ProductPrice>$ 25</ProductPrice>
+                <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
               </PriceDetail>
             </Product>
-            <Hr />
-            <Product>
-              <ProductDetail>
-                <Image src="https://images.pexels.com/photos/9594679/pexels-photo-9594679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"/>
-                <Details>
-                  <ProductName><b>Product:</b>OLIVE PARADISE HOODIE</ProductName>
-                  <ProductId><b>ID:</b>95593627</ProductId>
-                  <ProductColor color="#bdc3b5"/>
-                  <ProductSize><b>Size:</b>M</ProductSize>
-                </Details>
-              </ProductDetail>
-
-              <PriceDetail>
-                <ProductAmountContainer>
-                  <Add />
-                  <ProductAmount>2</ProductAmount>
-                  <Remove />
-                </ProductAmountContainer>
-                <ProductPrice>$ 30</ProductPrice>
-              </PriceDetail>
-            </Product>
-
+          ))}
+            <Hr/>
           </Info>
           <Summary>
           <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ 110</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
@@ -244,9 +242,19 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ 110</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
+            <StripeCheckout
+              name="SIMBA SHOP"
+              image="https://avatars.githubusercontent.com/u/43880563?v=4"
+              billingAddress
+              shippingAddress
+              description={`Your total is $${cart.total}`}
+              amount={cart.total * 100}
+              token={onToken}
+              stripeKey={KEY}>
             <Button>CHECKOUT NOW</Button>
+            </StripeCheckout>
           </Summary>
         </Bottom>
       </Wrapper>

@@ -3,6 +3,8 @@ import { Search, ShoppingCartOutlined } from '@material-ui/icons';
 import React from 'react';
 import { styled } from 'styled-components';
 import {mobile} from "../responsive";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   height: 60px;
@@ -68,6 +70,8 @@ const MenuItem = styled.div`
 `
 
 export default function Navbar() {
+  const quantity = useSelector(state => state.cart.quantity);
+
   return (
     <Container>
       <Wrapper>
@@ -79,16 +83,18 @@ export default function Navbar() {
             </SearchContainer>
           </Left>
           <Center>
-            <Logo>LAMA.</Logo>
+            <Logo>SIMBA.</Logo>
           </Center>
           <Right>
             <MenuItem>REGISTER</MenuItem>
             <MenuItem>SIGN IN</MenuItem>
-            <MenuItem>
-              <Badge overlap="rectangular" badgeContent={4} color="primary">
-                <ShoppingCartOutlined />
-              </Badge>
-            </MenuItem>
+            <Link to="/cart">
+              <MenuItem>
+                <Badge overlap="rectangular" badgeContent={quantity} color="primary">
+                  <ShoppingCartOutlined />
+                </Badge>
+              </MenuItem>
+            </Link>
           </Right>
       </Wrapper>
     </Container>

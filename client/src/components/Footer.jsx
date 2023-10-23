@@ -88,8 +88,8 @@ const Footer = () => {
   return (
     <Container>
       <Left>
-        <Logo>LAMA.</Logo>
-        <Desc>Discover stylish fashion for every occasion at LAMA. Elevate your wardrobe with trendy pieces and timeless classics, curated with care. Shop confidently and embrace your unique style today!</Desc>
+        <Logo>SIMBA.</Logo>
+        <Desc>Discover stylish fashion for every occasion at SIMBA. Elevate your wardrobe with trendy pieces and timeless classics, curated with care. Shop confidently and embrace your unique style today!</Desc>
         <SocialContainer>
         <SocialIcon color="3B5999">
             <Facebook />
@@ -131,7 +131,7 @@ const Footer = () => {
           <Phone style={{marginRight:"10px"}}/> +1 234 56 78
         </ContactItem>
         <ContactItem>
-          <MailOutline style={{marginRight:"10px"}} /> contact@lama.dev
+          <MailOutline style={{marginRight:"10px"}} /> contact@simba.nl
         </ContactItem>
         <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
       </Right>
