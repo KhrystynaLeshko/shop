@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import { userRequest } from '../requestMethods';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 // import dotenv from 'dotenv';
 // dotenv.config();
 // const KEY = process.env.REACT_APP_STRIPE_KEY;
@@ -185,19 +185,21 @@ const Cart = () => {
   const onToken = (token) => {
     setStripeToken(token);
   };
-  // console.log(stripeToken);
   useEffect(() => {
     const makeRequest = async () => {
       try {
       const res = await userRequest.post("/checkout/payment", {
         tokenId: stripeToken.id,
-        // amount: cart.total * 100,
         amount: 500,
       });
       navigate("/success",{data: res.data});
     } catch (error) {
-      console.log(error);
+      if (error.response){
+        console.log(error.response.data);
+      } else {
+        console.log(error);
       }
+    }
     };
     stripeToken && makeRequest();
   }, [stripeToken, cart.total, navigate]);

@@ -25,12 +25,6 @@ const Left = styled.div`
   align-items: center;
 `
 
-const Language = styled.span`
-  font-size: 14px;
-  cursor: pointer;
-  ${mobile({ display: "none"})};
-`
-
 const SearchContainer= styled.div`
   border: 0.5px solid lightgray;
   display: flex;
@@ -76,18 +70,23 @@ export default function Navbar() {
     <Container>
       <Wrapper>
           <Left>
-            <Language>EN</Language>
             <SearchContainer>
               <Input placeholder="Search"/>
               <Search style={{color:"gray", fontSize:16}}/>
             </SearchContainer>
           </Left>
           <Center>
-            <Logo>SIMBA.</Logo>
+            <Link to="/" style={{ textDecoration: "none"}}>
+              <Logo>SIMBA.</Logo>
+            </Link>
           </Center>
           <Right>
-            <MenuItem>REGISTER</MenuItem>
-            <MenuItem>SIGN IN</MenuItem>
+            <Link to="/register" style={{ textDecoration: "none"}}>
+              <MenuItem>REGISTER</MenuItem>
+            </Link>
+            <Link to="/login" style={{ textDecoration: "none"}}>
+              <MenuItem>LOG IN</MenuItem>
+            </Link>
             <Link to="/cart">
               <MenuItem>
                 <Badge overlap="rectangular" badgeContent={quantity} color="primary">
