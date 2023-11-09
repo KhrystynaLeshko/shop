@@ -9,10 +9,6 @@ import { useSelector } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import { userRequest } from '../requestMethods';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-// import dotenv from 'dotenv';
-// dotenv.config();
-// const KEY = process.env.REACT_APP_STRIPE_KEY;
 
 const KEY = import.meta.env.VITE_REACT_APP_STRIPE_KEY;
 
@@ -171,7 +167,8 @@ const SummaryItemPrice = styled.span``;
 const Button = styled.button`
   width: 100%;
   padding: 10px;
-  background-color: black;
+  background-color: teal;
+  border: none;
   color: white;
   font-weight: 600;
 `;
@@ -211,12 +208,12 @@ const Cart = () => {
       <Wrapper>
         <Title>YOUR SHOPPING CART</Title>
         <Top>
-          <TopButton>CONTINU SHOPPING</TopButton>
-          <TopTexts>
+          {/* <TopButton>CONTINU SHOPPING</TopButton> */}
+          {/* <TopTexts>
             <TopText><ShoppingCartOutlined />Shopping Bag(2)</TopText>
             <TopText><FavoriteBorderOutlined />My Wishlist(0)</TopText>
-          </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
+          </TopTexts> */}
+          {/* <TopButton type="filled">CHECKOUT NOW</TopButton> */}
         </Top>
 
         <Bottom>

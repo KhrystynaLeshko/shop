@@ -1,12 +1,14 @@
 import {createSlice} from '@reduxjs/toolkit';
 
+const initialState = {
+  currentUser: null,
+  isFetching: false,
+  error: false,
+};
+
 const userSlice = createSlice({
     name: "user",
-    initialState: {
-        currentUser: null,
-        isFetching: false,
-        error: false
-    },
+    initialState,
     reducers: {
       loginStart: (state) => {
         state.isFetching = true;
@@ -19,8 +21,19 @@ const userSlice = createSlice({
         state.isFetching = false;
         state.error = true;
       },
+      logout: (state) => {
+        state.user = null;
+        state.isFetching = false;
+        state.error = false
+      },
+      // Clear the entire Redux store when logging out by dispatching a special action that resets the store to its initial state.
+      resetUser: (state) => {
+        state.currentUser = initialState.currentUser;
+        state.isFetching = initialState.isFetching;
+        state.error = initialState.error;
+      }
     }
 });
 
-export const { loginStart, loginSuccess, loginFailure } = userSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, logout, resetUser } = userSlice.actions;
 export default userSlice.reducer;

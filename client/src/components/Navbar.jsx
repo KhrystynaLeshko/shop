@@ -3,8 +3,9 @@ import { Search, ShoppingCartOutlined } from '@material-ui/icons';
 import React from 'react';
 import { styled } from 'styled-components';
 import {mobile} from "../responsive";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { logoutUser } from "../redux/apiCalls";
 
 const Container = styled.div`
   height: 60px;
@@ -63,8 +64,25 @@ const MenuItem = styled.div`
   ${mobile({ fontSize: "12px", marginLeft: "10px"})};
 `
 
+const Button = styled.button`
+  width: 100%;
+  padding: 10px;
+  font-weight: 400;
+  border: none;
+  background-color: teal;
+  color: white;
+  cursor: pointer;
+`;
+
 export default function Navbar() {
   const quantity = useSelector(state => state.cart.quantity);
+
+  const user = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    logoutUser(dispatch);
+  }
 
   return (
     <Container>
@@ -81,12 +99,24 @@ export default function Navbar() {
             </Link>
           </Center>
           <Right>
-            <Link to="/register" style={{ textDecoration: "none"}}>
-              <MenuItem>REGISTER</MenuItem>
-            </Link>
-            <Link to="/login" style={{ textDecoration: "none"}}>
-              <MenuItem>LOG IN</MenuItem>
-            </Link>
+            {user ? (
+              <>
+                <MenuItem>
+                  <Button onClick={handleLogout}>LOGOUT</Button>
+                  {/* <button onClick={handleLogout}>LOGOUT</button> */}
+                </MenuItem>
+              </>
+            ) : (
+              <>
+                <Link to="/register" style={{ textDecoration: "none"}}>
+                <MenuItem>REGISTER</MenuItem>
+              </Link>
+              <Link to="/login" style={{ textDecoration: "none"}}>
+                <MenuItem>LOG IN</MenuItem>
+              </Link>
+              </>
+            )}
+
             <Link to="/cart">
               <MenuItem>
                 <Badge overlap="rectangular" badgeContent={quantity} color="primary">
