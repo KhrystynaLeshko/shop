@@ -103,7 +103,6 @@ export default function Navbar() {
               <>
                 <MenuItem>
                   <Button onClick={handleLogout}>LOGOUT</Button>
-                  {/* <button onClick={handleLogout}>LOGOUT</button> */}
                 </MenuItem>
               </>
             ) : (

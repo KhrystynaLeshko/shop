@@ -135,7 +135,21 @@ const Product = () => {
     const getProduct = async () => {
       try {
         const res = await publicRequest.get("/products/find/" + id);
+        res.data.color = ["green", "hotpink", "beige", "black"];
+        res.data.size = ["XS", "S", "M", "L", "XL"];
+
         setProduct(res.data);
+
+        res.data.color?.map((c, i) => {
+          if (c && i === 0) {
+            setColor(c);
+          }
+        });
+        res.data.size?.map((s, i) => {
+          if (s && i === 0) {
+            setSize(s);
+          }
+        });
       } catch {}
     };
     getProduct();
@@ -172,15 +186,15 @@ const Product = () => {
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              {product.color?.map((c) => (
+              {product.color?.map(c => (
                 <FilterColor color={c} key={c} onClick={() => setColor(c)}/>
               ))}
             </Filter>
 
             <Filter>
               <FilterTitle>Size</FilterTitle>
-              <FilterSize onChange={(e)=>setSize(e.target.value)}>
-                {product.size?.map((s) => (
+              <FilterSize onChange={(e)=>{console.log(e); setSize(e.target.value)}}>
+                {product.size?.map(s => (
                   <FilterSizeOption key={s}>{s}</FilterSizeOption>
                 ))}
               </FilterSize>

@@ -33,14 +33,6 @@ const persistConfig = {
 
     return mergedState;
   },
-
-  // custom merge function to handle state reset for the user reducer
-  // stateReconciler: (inboundState, originalState) => {
-  //   if (originalState.user && originalState.user.currentUser === null) {
-  //     return { ...originalState, user: { ...inboundState.user } };
-  //   }
-  //   return { ...inboundState };
-  // },
 };
 
 const rootReducer = combineReducers({ user: userReducer, cart: cartReducer });

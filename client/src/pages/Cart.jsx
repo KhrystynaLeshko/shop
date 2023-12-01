@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Announcement from '../components/Announcement';
 import Footer from '../components/Footer';
 import { styled } from 'styled-components';
-import { Add, FavoriteBorderOutlined, Remove, ShoppingCartOutlined } from '@material-ui/icons'
+import { DeleteForever, Add, FavoriteBorderOutlined, Remove, ShoppingCartOutlined } from '@material-ui/icons'
 import { mobile } from '../responsive';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import { userRequest } from '../requestMethods';
 import { useNavigate } from 'react-router-dom';
+import { resetCart, updateQuantity } from "../redux/cartRedux";
 
 const KEY = import.meta.env.VITE_REACT_APP_STRIPE_KEY;
 
@@ -24,37 +25,6 @@ const Wrapper = styled.div`
 const Title = styled.h1`
   font-weight: 300;
   text-align: center;
-`
-
-const Top = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-`
-
-const TopButton = styled.button`
-  padding: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  border: ${(props) => props.type === "filled" && "none"};
-  background-color: ${(props) => props.type === "filled" ? "black" : "transparent"};
-  color: ${(props) => props.type === "filled" && "white"};
-`
-
-const TopTexts = styled.div`
-  display: flex;
-  ${mobile({ display: "none"})}
-`
-
-const TopText = styled.span`
-  text-decoration: underline;
-  cursor: pointer;
-  margin: 0 10px;
-  padding-left: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `
 
 const Bottom = styled.div`
@@ -77,6 +47,7 @@ const Product = styled.div`
 const ProductDetail = styled.div`
   flex: 2;
   display: flex;
+
 `
 
 const Image = styled.img`
@@ -91,11 +62,13 @@ const Details = styled.div`
 `
 
 const ProductName = styled.span`
-
+  display: flex;
+  gap: 4px;
 `
 
 const ProductId = styled.span`
-
+  display: flex;
+  gap: 4px;
 `
 
 const ProductColor = styled.span`
@@ -106,7 +79,8 @@ const ProductColor = styled.span`
 `
 
 const ProductSize = styled.span`
-
+  display: flex;
+  gap: 4px;
 `
 
 const PriceDetail = styled.div`
@@ -141,6 +115,19 @@ const Hr = styled.hr`
   height: 1px;
 `;
 
+const ClearCartContainer = styled.div`
+  display: flex;
+  flex: 1;
+  padding: 20px;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+`
+
+const ClearText = styled.div`
+
+`
+
 const Summary = styled.div`
   flex: 1;
   border: 0.5px solid lightgray;
@@ -171,17 +158,51 @@ const Button = styled.button`
   border: none;
   color: white;
   font-weight: 600;
+  cursor: pointer;
 `;
 
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-  const [stripeToken, setStripeToken] = React.useState(null);
+  const [stripeToken, setStripeToken] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+
+  // const handleQuantity = (type) => {
+  //   if (type === "dec") {
+  //     quantity > 1 && setQuantity(quantity - 1);
+  //   } else {
+  //     setQuantity(quantity + 1);
+  //   }
+  // };
+
+
+  const handleQuantity = (type, productId) => {
+    const updatedCart = cart.products.map((product) => {
+      if (product._id === productId) {
+        return {
+          ...product,
+          quantity: type === "dec" ? Math.max(1, product.quantity - 1) : product.quantity + 1,
+        };
+      }
+      return product;
+    });
+    console.log('updatedCart:', updatedCart);
+    dispatch(updateQuantity(updatedCart));
+  };
+
+// CLEAR CART functionality
+  const handleReset = () => {
+    dispatch(
+      resetCart(cart)
+    );
+  };
 
   const onToken = (token) => {
     setStripeToken(token);
   };
+
   useEffect(() => {
     const makeRequest = async () => {
       try {
@@ -207,40 +228,37 @@ const Cart = () => {
       <Announcement/>
       <Wrapper>
         <Title>YOUR SHOPPING CART</Title>
-        <Top>
-          {/* <TopButton>CONTINU SHOPPING</TopButton> */}
-          {/* <TopTexts>
-            <TopText><ShoppingCartOutlined />Shopping Bag(2)</TopText>
-            <TopText><FavoriteBorderOutlined />My Wishlist(0)</TopText>
-          </TopTexts> */}
-          {/* <TopButton type="filled">CHECKOUT NOW</TopButton> */}
-        </Top>
-
         <Bottom>
           <Info>
           {cart.products.map((product) => (
-            <Product>
+            <Product key={product._id}>
               <ProductDetail>
                 <Image src={product.img}/>
                 <Details>
                   <ProductName><b>Product:</b>{product.title}</ProductName>
                   <ProductId><b>ID:</b>{product._id}</ProductId>
                   <ProductColor color={product.color}/>
-                  <ProductSize><b>Size:</b>{product.size}</ProductSize>
-                  {/* {product.size && <ProductSize><b>Size:</b>{product.size}</ProductSize>} */}
+                  <>
+                  {product.size && <ProductSize><b>Size:</b>{product.size}</ProductSize>}
+                  </>
                 </Details>
               </ProductDetail>
               <PriceDetail>
                 <ProductAmountContainer>
-                  <Add />
+                  <Remove onClick={() => handleQuantity("dec", product._id)}/>
                   <ProductAmount>{product.quantity}</ProductAmount>
-                  <Remove />
+                  <Add onClick={() => handleQuantity("inc", product._id)}/>
                 </ProductAmountContainer>
                 <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
               </PriceDetail>
             </Product>
           ))}
             <Hr/>
+            <ClearCartContainer>
+              <DeleteForever />
+              <ClearText onClick={handleReset}>Clear Cart</ClearText>
+            </ClearCartContainer>
+
           </Info>
           <Summary>
           <SummaryTitle>ORDER SUMMARY</SummaryTitle>
