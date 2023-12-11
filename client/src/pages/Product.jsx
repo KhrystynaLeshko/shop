@@ -53,6 +53,8 @@ const Price = styled.span`
 
 const FilterContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 6px;
   justify-content: space-between;
   width: 50%;
   margin: 30px 0px;
@@ -135,7 +137,7 @@ const Product = () => {
     const getProduct = async () => {
       try {
         const res = await publicRequest.get("/products/find/" + id);
-        res.data.color = ["green", "hotpink", "beige", "black"];
+        res.data.color = ["LightCoral", "PaleVioletRed", "Lavender", "DarkSeaGreen", "beige", "black"];
         res.data.size = ["XS", "S", "M", "L", "XL"];
 
         setProduct(res.data);

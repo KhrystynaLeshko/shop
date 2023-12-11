@@ -79,7 +79,7 @@ export default function Navbar() {
 
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
-
+  // USES LOGOUTUSER FUNCTION FROM REDUX
   const handleLogout = () => {
     logoutUser(dispatch);
   }
@@ -99,12 +99,14 @@ export default function Navbar() {
             </Link>
           </Center>
           <Right>
+          // SHOW LOGOUT BTN IF THERE IS A USER
             {user ? (
               <>
                 <MenuItem>
                   <Button onClick={handleLogout}>LOGOUT</Button>
                 </MenuItem>
               </>
+          // SHOW REGISTER & LOGIN BTN IF THERE IS NO USER
             ) : (
               <>
                 <Link to="/register" style={{ textDecoration: "none"}}>

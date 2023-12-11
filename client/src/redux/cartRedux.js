@@ -34,7 +34,7 @@ const cartSlice = createSlice({
         productToUpdate.quantity = newQuantity;
       }
     },
-    // new action to RESET the cart state
+    // new action to RESET the cart state -> after LOGOUT & CLEAR CART functionalities
     resetCart: (state) => {
       state.products = [];
       state.quantity = 0;

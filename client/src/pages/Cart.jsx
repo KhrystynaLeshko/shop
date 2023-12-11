@@ -161,13 +161,11 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const [stripeToken, setStripeToken] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   // const handleQuantity = (type) => {
   //   if (type === "dec") {
@@ -177,7 +175,7 @@ const Cart = () => {
   //   }
   // };
 
-
+  // UPDATE QUANTITY functionality
   const handleQuantity = (type, productId) => {
     const updatedCart = cart.products.map((product) => {
       if (product._id === productId) {
@@ -199,6 +197,7 @@ const Cart = () => {
     );
   };
 
+// STRIPE CHECKOUT
   const onToken = (token) => {
     setStripeToken(token);
   };

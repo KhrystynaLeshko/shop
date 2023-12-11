@@ -26,7 +26,7 @@ const userSlice = createSlice({
         state.isFetching = false;
         state.error = false
       },
-      // Clear the entire Redux store when logging out by dispatching a special action that resets the store to its initial state.
+      // Clear the entire Redux store when LOGOUT by dispatching a special action that resets the store to its initial state.
       resetUser: (state) => {
         state.currentUser = initialState.currentUser;
         state.isFetching = initialState.isFetching;

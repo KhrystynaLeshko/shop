@@ -21,6 +21,8 @@ const Info = styled.div`
 
 const Container = styled.div`
   flex: 1;
+  flex-direction: column;
+  gap: 4px;
   margin: 5px;
   min-width:280px;
   height: 350px;
@@ -57,27 +59,29 @@ const Icon = styled.div`
   }
 `
 
+const ItemData = styled.div`
+
+`
+const ItemPrice = styled.div``
 const Product = ({item}) => {
 
   return (
     <Container>
       <Image src={item.img}/>
       <Info>
-      {/* {item.price} */}
-        <Icon>
-          <ShoppingCartOutlined/>
-        </Icon>
-
         <Icon>
           <Link to={`/product/${item._id}`}>
           <SearchOutlined />
           </Link>
         </Icon>
-        <Icon>
+        {/* <Icon>
           <FavoriteBorderOutlined/>
-        </Icon>
+        </Icon> */}
       </Info>
-      {item.title}
+      <ItemData>{item.title}</ItemData>
+      <ItemPrice> $ {item.price}</ItemPrice>
+
+
     </Container>
   )
 }
