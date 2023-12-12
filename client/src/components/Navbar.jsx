@@ -99,7 +99,6 @@ export default function Navbar() {
             </Link>
           </Center>
           <Right>
-          // SHOW LOGOUT BTN IF THERE IS A USER
             {user ? (
               <>
                 <MenuItem>

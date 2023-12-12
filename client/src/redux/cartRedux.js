@@ -24,9 +24,11 @@ const cartSlice = createSlice({
       },
     // new action to UPDATE the Cart
     updateQuantity: (state, action) => {
+      console.log(state, action)
       const { productId, newQuantity } = action.payload;
       const productToUpdate = state.products.find((product) => product._id === productId);
 
+      console.log(action.payload)
       if (productToUpdate) {
         const quantityDifference = newQuantity - productToUpdate.quantity;
         state.quantity += quantityDifference;
