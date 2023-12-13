@@ -8,7 +8,7 @@ import { mobile } from "../responsive";
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 90vh;
   display: flex;
   position: relative;
   overflow: hidden;
@@ -68,13 +68,6 @@ const Desc = styled.p`
   font-style: 20px;
   font-weight: 500;
   letter-spacing: 3px;
-`
-
-const Button = styled.button`
-  font-style: 20px;
-  padding: 10px;
-  background-color: transparent;
-  cursor: pointer;
 `
 
 const Slider = () => {

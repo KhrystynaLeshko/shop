@@ -26,19 +26,6 @@ const Left = styled.div`
   align-items: center;
 `
 
-const SearchContainer= styled.div`
-  border: 0.5px solid lightgray;
-  display: flex;
-  align-items: center;
-  margin-left: 25px;
-  padding: 5px;
-`
-
-const Input = styled.input`
-  border: none;
-  ${mobile({ width: "50px"})};
-`
-
 const Center = styled.div`
   flex: 1;
   text-align: center;
@@ -88,10 +75,7 @@ export default function Navbar() {
     <Container>
       <Wrapper>
           <Left>
-            <SearchContainer>
-              <Input placeholder="Search"/>
-              <Search style={{color:"gray", fontSize:16}}/>
-            </SearchContainer>
+
           </Left>
           <Center>
             <Link to="/" style={{ textDecoration: "none"}}>

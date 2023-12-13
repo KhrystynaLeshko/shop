@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import { userRequest } from '../requestMethods';
 import { useNavigate } from 'react-router-dom';
-import { resetCart, updateQuantity } from "../redux/cartRedux";
+import { resetCart, updateQuantity, addProduct, removeProduct } from "../redux/cartRedux";
 
 const KEY = import.meta.env.VITE_REACT_APP_STRIPE_KEY;
 
@@ -167,27 +167,36 @@ const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // const handleQuantity = (type) => {
-  //   if (type === "dec") {
-  //     quantity > 1 && setQuantity(quantity - 1);
-  //   } else {
-  //     setQuantity(quantity + 1);
-  //   }
-  // };
 
   // UPDATE QUANTITY functionality
   const handleQuantity = (type, productId) => {
-    const updatedCart = cart.products.map((product) => {
+
+    let newQuantity;
+    const newCartProducts = cart.products.map((product) => {
+      newQuantity = type === "dec" ? Math.max(1, product.quantity - 1) : product.quantity + 1;
       if (product._id === productId) {
         return {
           ...product,
-          quantity: type === "dec" ? Math.max(1, product.quantity - 1) : product.quantity + 1,
+          quantity: newQuantity
         };
       }
       return product;
     });
-    console.log('updatedCart:', updatedCart);
-    dispatch(updateQuantity(updatedCart));
+
+    dispatch(updateQuantity({newCartProducts, productId, newQuantity}));
+
+    addProduct({ ...product, quantity, color, size })
+  };
+
+  const handleQuantityUp = () => {
+    dispatch(
+      addProduct({ ...product, quantity, color, size })
+    );
+  };
+  const handleQuantityDown = () => {
+    dispatch(
+      removeProduct({ ...product, quantity, color, size })
+    );
   };
 
 // CLEAR CART functionality
@@ -230,7 +239,7 @@ const Cart = () => {
         <Bottom>
           <Info>
           {cart.products.map((product) => (
-            <Product key={product._id}>
+            <Product key={`${product._id}_${product.color}_${product.size}`}>
               <ProductDetail>
                 <Image src={product.img}/>
                 <Details>
@@ -244,9 +253,9 @@ const Cart = () => {
               </ProductDetail>
               <PriceDetail>
                 <ProductAmountContainer>
-                  <Remove onClick={() => handleQuantity("dec", product._id)}/>
+                  <Remove onClick={() => dispatch(removeProduct(product))}/>
                   <ProductAmount>{product.quantity}</ProductAmount>
-                  <Add onClick={() => handleQuantity("inc", product._id)}/>
+                  <Add onClick={() => dispatch(addProduct(product))}/>
                 </ProductAmountContainer>
                 <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
               </PriceDetail>
