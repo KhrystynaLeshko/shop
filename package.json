@@ -1,0 +1,15 @@
+{
+  "name": "shop",
+  "version": "1.0.0",
+  "description": "![homepage](./client/src/assets/readme1.png) ![categories](./client/src/assets/readme2.png)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mogodb": "^0.0.1-security"
+  }
+}
