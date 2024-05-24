@@ -77,8 +77,6 @@ const Product = ({item}) => {
       </Info>
       <ItemData>{item.title}</ItemData>
       <ItemPrice> $ {item.price}</ItemPrice>
-
-
     </Container>
   )
 }
