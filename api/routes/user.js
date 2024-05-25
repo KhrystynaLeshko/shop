@@ -4,6 +4,19 @@ const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} = require
 const router = require("express").Router();
 const CryptoJS = require("crypto-js");
 
+
+
+// test
+router.get("/usertest", (req,res) => {
+    res.send("test is successfull!!!!");
+});
+
+router.post("/userposttest", (req,res) => {
+  const username = req.body.username;
+  res.send("your username is:" + username);
+})
+// end test
+
 // UPDATE
 router.put("/:id", verifyTokenAndAuthorization, async (req,res) => {
   if (req.body.password) {

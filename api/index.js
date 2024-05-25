@@ -21,6 +21,12 @@ mongoose
 // To get response from Postman. Testing purposes
 app.use(express.json());
 
+
+// test
+app.get("/api/test", () => {
+    console.log("test is successfull!!!!");
+});
+
 // ROUTES
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);

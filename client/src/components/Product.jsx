@@ -29,7 +29,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f8f2fa;
+  background-color: rgba(239, 231, 242, 0.5);
   position: relative;
 
   &:hover ${Info}{
@@ -82,3 +82,4 @@ const Product = ({item}) => {
 }
 
 export default Product
+
